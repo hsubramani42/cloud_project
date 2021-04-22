@@ -1,0 +1,195 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Math Club, Vellore Institute of Technology - Amaravati">
+    <title>Upload</title>
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/starter-template/">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color:#343148">
+        <a class="navbar-brand" href="#">Welcome Coordinator!</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navB" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navB">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item pl-2 pr-2">
+                    <a class="nav-link" href="{% url 'adminDashboard' %}">Home</a>
+                </li>
+                <li class="nav-item active pl-2 pr-2">
+                    <a class="nav-link" href="{% url 'upload' %}">Upload</a>
+                </li>
+                <li class="nav-item pl-2 pr-2">
+                    <a class="nav-link" href="{% url 'data'%}">Data</a>
+                </li>
+                <li class="nav-item pl-2 pr-2">
+                    <a class="nav-link" href="{% url 'approve' %}">Approve</a>
+                </li>
+                <li class="nav-item pl-2 pr-2">
+                    <a class="nav-link" href="{% url 'attendance' %}">Attendance</a>
+                </li>
+                <li class="nav-item pl-2 pr-2">
+                    <a class="nav-link" href="{% url 'feedbackView' %}">Feedback</a>
+                </li>
+                <li class="nav-item pl-2 pr-2">
+                    <a class="nav-link" href="{% url 'adminLogout' %}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="jumbotron bg-white">
+    </div>
+    <div class="jumbotron bg-white col-sm-12 col-md-8 col-lg-8 m-auto" style="border: 2px solid black">
+        <h3 class="text text-center mb-5" style="text-decoration-line: underline">Create Event</h3>
+        <form action="{% url 'upload'%}" method="post">
+            {% csrf_token %}
+            <table class="table table-borderless table-responsive-sm text-center">
+                <tr>
+                    <td><strong>Event Name</strong></td>
+                    <td>
+                        <input type="text" class="form-control" id="fullname1" placeholder="Event Name" name="name">
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>No.of Participants</strong></td>
+                    <td><select class="form-control" id="service1" name="number">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select></td>
+                <tr>
+                    <td><strong>Description</strong></td>
+                    <td><textarea class="form-control" id="message1" name="description" rows="3"></textarea></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div style="text-align: center"><button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <br />
+    {%if events%}
+    <div class="jumbotron bg-white col-sm-12 col-md-8 col-lg-8 m-auto" style="border: 2px solid black">
+        <form action="{% url 'upload' %}" method="post">
+            <h3 class="text text-center" style="text-decoration-line: underline">Delete Event</h3>
+            {% csrf_token %}
+            <table class="table table-borderless table-responsive-sm">
+                <thead>
+                    <tr style="text-align: center">
+                        <td><strong>Event Name</strong></td>
+                        <td><strong>Action</strong></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in events %}
+                    <tr style="text-align: center">
+                        <td id="{{event.eventName}}">{{event.eventName}}</td>
+                        <td class="{{event.eventName}}">
+                            <div style="text-align: center"><button type="button" class="btn btn-danger" onclick="add('{{event.eventName}}')">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td colspan="2">
+                            <div style="text-align: center"><button type="submit" class="btn btn-primary">Save Changes</button></div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <input type="text" name="delete" id="delete" style="visibility: hidden" />
+        </form>
+    </div>
+    <br />
+    {%endif%}
+    <div class="jumbotron bg-white col-sm-12 col-md-8 col-lg-8 m-auto" style="border: 2px solid black">
+        <h3 class="text-center text-dark" style="text-decoration-line: underline">Top 3 Score in Tackle</h3><br />
+        <form action="{% url 'upload' %}" method="post">
+            {% csrf_token %}
+            <table class="table table-responsive-sm table-borderless">
+                <thead class="thead-dark text text-center">
+                    <td><strong>S.no</strong></td>
+                    <td><strong>Reg no</strong></td>
+                    <td><strong>Score</strong></td>
+                </thead>
+                <tbody class="text text-center">
+                    <tr>
+                        <td><strong>1</strong></td>
+                        <td>
+                            <input class="form-control reg" type="text" placeholder="Reg No" required maxlength="10" />
+                        </td>
+                        <td>
+                            <input class="form-control score" type="text" placeholder="Score" required maxlength="4" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>2</strong></td>
+                        <td>
+                            <input class="form-control reg" type="text" placeholder="Reg No" required maxlength="10" />
+                        </td>
+                        <td>
+                            <input class="form-control score" type="text" placeholder="Score" required maxlength="4" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>3</strong></td>
+                        <td>
+                            <input class="form-control reg" type="text" placeholder="Reg No" required maxlength="10" />
+                        </td>
+                        <td>
+                            <input class="form-control score" type="text" placeholder="Score" required maxlength="4" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <div style="text-align: center"><button type="submit" class="btn btn-primary" onclick="check()">Update</button></div>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+            <input type="text" id="top3" name="top3" style="visibility: hidden">
+        </form>
+    </div>
+    <script>
+        function check() {
+            var reg = document.getElementsByClassName("reg");
+            var score = document.getElementsByClassName("score");
+            for (var i = 0; i < 3; i = i + 1) {
+                var a = document.getElementById("top3").value;
+                document.getElementById("top3").value = a + "&regno=" + reg[i].value + "&score=" + score[i].value
+            }
+        }
+
+        function add(name) {
+            var a = document.getElementById("delete").value
+            if (confirm("Are you sure you want to delete?")) {
+                if (a == "") {
+                    document.getElementById("delete").value = name
+                } else {
+                    document.getElementById("delete").value = a + "-" + name
+                }
+            }
+        }
+
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

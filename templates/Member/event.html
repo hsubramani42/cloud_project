@@ -1,0 +1,154 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Math Club, Vellore Institute of Technology - Amaravati">
+    <title>Event Registration</title>
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/starter-template/">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <script src="{%static 'js/events.js'%}"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color:#343148">
+        <a class="navbar-brand" href="#">Welcome {{dict.name}}</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navB" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navB">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item pl-2 pr-2">
+                    <a class="nav-link" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item active pl-2 pr-2">
+                    <a class="nav-link" active href="{% url 'eventRegister' %}">Event</a>
+                </li>
+                {% if dict.tackle %}
+                <li class="nav-item pl-2 pr-2">
+                    <a class="nav-link" href="{% url 'tackle' %}">Tackle</a>
+                </li>
+                {% endif %}
+                {% if dict.type %}
+                <li class="nav-item pl-2 pr-2">
+                    <a class="nav-link" href="{% url 'attendanceCheck' %}">Attendance</a>
+                </li>
+                {% endif %}
+                <li class="nav-item pl-2 pr-2">
+                    <a class="nav-link" href="{% url 'feedback' %}">Feedback</a>
+                </li>
+                <li class="nav-item pl-2 pr-2">
+                    <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                </li>
+                <li class="nav-item pl-2 pr-2">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <br />
+    {% if data %}
+    {% for info in data %}
+    {% if not info.tid %}
+    <div class="jumbotron mt-5 pt-2 pb-3 bg-white" style="border-top: 2px solid #123646; border-bottom: 2px solid #123646">
+        <form action="{% url 'eventRegister' %}" method="post">
+            {% csrf_token %}
+            <table class="table m-auto">
+                <tr>
+                    <td>
+                        <h3 style="color: #581e77">{{info.eventName}} Event</h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Description: </strong>{{info.description}}</td>
+                </tr>
+            </table>
+            <div class="jumbotron bg-white p-0">
+                <table class="table table-responsive-md col-sm-12 col-md-8 col-lg-6 m-auto ">
+                    {% if info.number %}
+                    {% for i in info.number %}
+                    <tr>
+                        <td>
+                            <input type="email" class="form-control mail" placeholder="Email ID" maxlength="40" required>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control reg" placeholder="Reg No" maxlength="10" required>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                    <tr>
+                        <td><select class="form-control" id="{{info.eventName}}" onclick="magic('{{info.description}}')">
+                                <option id="{{info.description}}">Slot</option>
+                                <option>04:00 PM</option>
+                                <option>05:00 PM</option>
+                                <option>06:00 PM</option>
+                            </select>
+                        </td>
+                        <td>
+                            <div style="text-align: center"><button type="submit" class="btn btn-info" onclick="return dissapear('{{info.eventName}}')">Register</button></div>
+                        </td>
+                        <script>
+                            function magic(id) {
+                                document.getElementsById(id).setAttribute("type", "hidden");
+                            }
+
+                            function dissapear(name) {
+                                data = document.getElementsByName(name)[0].value + "&eventName=" + name + "&slot=" + document.getElementById(name).value;
+                                document.getElementsByName(name)[0].value = data;
+                                mail = document.getElementsByClassName("mail");
+                                reg = document.getElementsByClassName("reg");
+                                for (var i = 0; i < mail.length; i = i + 1) {
+                                    data = document.getElementsByName(name)[0].value + "&username=" + mail[i].value + "&regno=" + reg[i].value;
+                                    document.getElementsByName(name)[0].value = data
+                                }
+                            }
+
+                        </script>
+                    </tr>
+                </table>
+            </div>
+            <input type="text" value="{{initial}}" name="{{info.eventName}}" class="{{info.eventName}}" style="visibility: hidden">
+        </form>
+    </div>
+    {% endif %}
+    {% if info.tid %}
+    <div class="jumbotron mt-5 pt-2 pb-3 bg-white">
+        <table class="table table-responsive-sm col-sm-12 col-md-8 col-lg-8 m-auto" style="border: 2px solid black">
+            <tr>
+                <td><img src="http://chart.apis.google.com/chart?cht=qr&chs={{ size }}x{{ size }}&chl={{ tid }}" /></td>
+                <td style="text-align: center">
+                    <h3 class="text text-danger" style="text-decoration-line: underline">{{info.eventName}}<br /> Event Pass</h3><br /><strong>Use this QR-Code to participate in the event</strong>
+                </td>
+            </tr>
+        </table>
+        <br />
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% else %}
+    <div class="jumbotron mt-5 pt-2 pb-3 bg-dark" style="text-align: center">
+        <br>
+        <table class="m-auto">
+            <tr>
+                <td><i class='fas fa-exclamation-circle' style='font-size:36px;color:#b9bfc6'></i></td>
+                <td>
+                    <h4 class="text" style="color: #d9e2eb">There's no event now. Stay tuned for updates.</h4>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    {% endif %}
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

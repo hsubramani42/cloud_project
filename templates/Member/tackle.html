@@ -1,0 +1,146 @@
+{%load static%}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Math Club, Vellore Institute of Technology - Amaravati">
+    <title>Tackle</title>
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/starter-template/">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color:#343148">
+        <a class="navbar-brand" href="#">Welcome {{dict.name}}</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navB" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navB">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item pl-2 pr-2">
+                    <a class="nav-link" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item pl-2 pr-2">
+                    <a class="nav-link" href="{% url 'eventRegister' %}">Event</a>
+                </li>
+                {% if dict.tackle %}
+                <li class="nav-item active pl-2 pr-2">
+                    <a class="nav-link" href="{% url 'tackle' %}">Tackle</a>
+                </li>
+                {% endif %}
+                {% if dict.type %}
+                <li class="nav-item pl-2 pr-2">
+                    <a class="nav-link" href="{% url 'attendanceCheck' %}">Attendance</a>
+                </li>
+                {% endif %}
+                <li class="nav-item pl-2 pr-2">
+                    <a class="nav-link" href="{% url 'feedback' %}">Feedback</a>
+                </li>
+                <li class="nav-item pl-2 pr-2">
+                    <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                </li>
+                <li class="nav-item pl-2 pr-2">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="jumbotron bg-white" style="margin-top: 100px;">
+        {% if message.success %}
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <span type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </span>
+            <strong>{{message.success}}</strong>
+        </div>
+        {% endif %}
+        {% if message.warning %}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <span type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </span>
+            <strong>{{message.warning}}</strong>
+        </div>
+        {% endif %}
+        {%if not evaluation %}
+        {%if not submission %}
+        <table class="table table-responsive-sm">
+            <thead style="text-align: center">
+                <tr>
+                    <th>Question</th>
+                    <th>Answer</th>
+                </tr>
+            </thead>
+            <tbody style="text-align: center">
+                <tr>
+                    <td>
+                        <strong>Here's this weekend question.<br /> Are you ready?&emsp;</strong><a href="{{ file }}" target="_blank">Download</a>
+                    </td>
+                    <td style="align-content: center;justify-content: center;text-align: center">
+                        <form action="{% url 'tackle' %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token%}
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" accept="application/pdf" class="custom-file-input" name="file">
+                                    <label class="custom-file-label" id="Choose File"></label>
+                                </div>
+                                <input type="submit" class="btn btn-success btn-outline-white" value="Upload" />
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        {%else%}
+        <div class="jumbotron pt-3 pb-3" style="text-align: center">
+            <h3 style="color: #07959a">You work has submitted</h3>
+        </div>
+        {%endif%}
+        {% else %}
+        <div class="jumbotron pt-3 pb-3 bg-dark" style="text-align: center">
+            <h6 class="text" style="color: #d9e2eb">Evaluation is under progress!<br /> Come back tomorrow to view next weekend question</h6>
+        </div>
+        {% endif %}
+    </div>
+    {% if topscores %}
+    <div class="jumbotron bg-white m-auto">
+        <div>
+            <h4 style="font-size: 15px" class="text text-center"><strong><a href="{{ solution }}" target="_blank">Download</a> last week's solution.</strong></h4>
+        </div>
+        <br />
+        <br />
+        <div>
+            <h1 class="text text-danger m-auto text-center">Last Week<br /> Top 3 Scores</h1>
+            <br />
+        </div>
+        <table class="table table-hover table-responsive-sm">
+            <thead style="text-align: center; font-weight: bolder">
+                <th>Name</th>
+                <th>Reg no</th>
+                <th>Score</th>
+            </thead>
+            <tbody style="text-align: center">
+                {% for t in topscores %}
+                <tr>
+                    <td>{{t.member.username}}</td>
+                    <td>{{t.member.regno}}</td>
+                    <td>{{t.score}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

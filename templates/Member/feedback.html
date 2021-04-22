@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Math Club, Vellore Institute of Technology - Amaravati">
+    <title>Feedback </title>
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/starter-template/">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color:#343148">
+        <a class="navbar-brand" href="#">Welcome {{dict.name}}</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navB" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navB">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item pl-2 pr-2">
+                    <a class="nav-link" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item pl-2 pr-2">
+                    <a class="nav-link" href="{% url 'eventRegister' %}">Event</a>
+                </li>
+                {% if dict.tackle %}
+                <li class="nav-item pl-2 pr-2">
+                    <a class="nav-link" href="{% url 'tackle' %}">Tackle</a>
+                </li>
+                {% endif %}
+                {% if dict.type %}
+                <li class="nav-item pl-2 pr-2">
+                    <a class="nav-link" href="{% url 'attendanceCheck' %}">Attendance</a>
+                </li>
+                {% endif %}
+                <li class="nav-item active pl-2 pr-2">
+                    <a class="nav-link" href="{% url 'feedback' %}">Feedback</a>
+                </li>
+                <li class="nav-item pl-2 pr-2">
+                    <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                </li>
+                <li class="nav-item pl-2 pr-2">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="jumbotron col-lg-6 pb-3 m-auto bg-white" style="top: 100px; border: 2px solid rgba(46, 15, 82, 0.6);color: #1c6242">
+        <form action="{% url 'feedback' %}" method="post">
+            {% csrf_token %}
+            {% if message %}
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <span type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </span>
+                <strong>{{message}}</strong>
+            </div>
+            {% endif %}
+            <div class="text-center text-monospace">
+                <h2 class="text m-auto" style="color: #113560"><strong>Feedback Form</strong></h2><br><br>
+            </div>
+            <fieldset class="form-group">
+                <label for="service1"><strong>Select Anonymity</strong></label>
+                <select class="form-control" name="username">
+                    <option>{{dict.username}}</option>
+                    <option>Anonymous</option>
+                </select>
+            </fieldset>
+            <fieldset class="form-group">
+                <label for="service1"><strong>Type</strong></label>
+                <select class="form-control" name="service">
+                    <option>Suggestion</option>
+                    <option>Complaint</option>
+                    <option>Feedback</option>
+                    <option>Message</option>
+                </select>
+            </fieldset>
+            <fieldset class="form-group">
+                <label for="message1"><strong>Your Message</strong></label>
+                <textarea class="form-control" name="message" rows="3" maxlength="200" placeholder="Type your text here" required></textarea>
+            </fieldset>
+            <button type="submit" class="btn btn-primary" onclick="return confirmation()">Submit</button>
+        </form>
+        <script>
+            function confirmation() {
+                if (confirm("Note: If your message contains inappropriate words then your account will be deleted and punished according to VIT Norms")) {
+                    return true
+                } else {
+                    return false
+                }
+            }
+
+        </script>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
