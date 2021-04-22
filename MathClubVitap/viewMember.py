@@ -152,8 +152,9 @@ def events(request):
         eventName=data.get("eventName")
         for i in range(len(username)):
             try:
-                event=EventMember.objects.create(username=username[i].lower(),regno=regno[i].upper(),slot=slot,teamID=tid,eventName=eventName)
-                event.save()
+                if username[i]!="":
+                    event=EventMember.objects.create(username=username[i].lower(),regno=regno[i].upper(),slot=slot,teamID=tid,eventName=eventName)
+                    event.save()
             except Exception:
                 pass
         data=memdata(dict)

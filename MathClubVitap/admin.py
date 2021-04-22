@@ -4,7 +4,7 @@ from .models import *
 class AdminMemberView(admin.ModelAdmin):
     list_display=['username','name','regno','type','tackle']
 class AdminTempMemberView(admin.ModelAdmin):
-    list_display=['username','password','name','regno']
+    list_display=['username','name','regno']
 class AdminView(admin.ModelAdmin):
     list_display=['username',"name"]
 class AdminTackleMemberView(admin.ModelAdmin):
