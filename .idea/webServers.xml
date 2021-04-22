@@ -3,7 +3,7 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="795420e6-cbfa-4f8b-bc15-7ed2715e4b75" name="cloud">
-        <fileTransfer accessType="SFTP" host="ec2-18-216-16-103.us-east-2.compute.amazonaws.com" port="22" sshConfigId="6b96f2c8-d506-4090-9c8f-73e972911ca0" sshConfig="ubuntu@ec2-18-216-16-103.us-east-2.compute.amazonaws.com:22 key" keyPair="true">
+        <fileTransfer accessType="SFTP" host="ec2-18-116-73-195.us-east-2.compute.amazonaws.com" port="22" sshConfigId="6b96f2c8-d506-4090-9c8f-73e972911ca0" sshConfig="ubuntu@ec2-18-116-73-195.us-east-2.compute.amazonaws.com:22 key" keyPair="true">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>
