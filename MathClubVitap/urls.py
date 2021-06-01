@@ -26,4 +26,4 @@ urlpatterns = [
     path('data/',v2.data,name="data"),
     path('download/<path:filename>',v2.download,name="datadownload"),
     path('media/data/<path:path>',v3.download,name='download'),
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]

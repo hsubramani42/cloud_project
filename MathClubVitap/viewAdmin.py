@@ -281,14 +281,7 @@ def adminAttendance(request):
     if(request.method=='POST'):
         text=request.POST["text"]
         try:
-            text=text.lower()
-            if(text=="delete"):
-                m=Attendance.objects.filter(username='Admin')
-                m.delete()
-                text=""
-            else:
-                m=Attendance.objects.create(username='Admin',hint=text,date=str(date.today()))
-                m.save()
+            pass
         except Exception:
             pass
     try:
