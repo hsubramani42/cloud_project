@@ -146,6 +146,7 @@ def events(request):
                 data=QueryDict(request.POST[event.eventName])
             except Exception:
                 pass
+        print(data)
         username=data.getlist("username")
         regno=data.getlist("regno")
         slot=data.get("slot")

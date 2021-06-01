@@ -1,7 +1,0 @@
-db.sqlite3
-media/tackle
-media/testing_data
-*/migrations/*_initial.py
-*/migrations/0*
-version0001/*
-*/__pycache__

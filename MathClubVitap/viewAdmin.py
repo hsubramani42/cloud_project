@@ -108,6 +108,7 @@ def adminEvent(request):
                 try:
                     string=request.POST["top3"]
                     dict=QueryDict(string)
+                    print(dict)
                     regs=dict.getlist("regno")
                     scores=dict.getlist("score")
                     Topscores.objects.all().delete()
@@ -115,7 +116,9 @@ def adminEvent(request):
                         try:
                             member=Member.objects.get(regno=regs[i].upper())
                             print(member)
-                            Topscores.objects.create(member=member,score=scores[i])
+                            ts = Topscores.objects.get_or_create(member=member)
+                            ts[0].score = scores[i]
+                            ts[0].save()
                         except Exception as e:
                             pass
                 except Exception:
