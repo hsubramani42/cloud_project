@@ -1,4 +1,4 @@
-# ClubApplication
+# Club Application
 
 About this project
 -------------------
